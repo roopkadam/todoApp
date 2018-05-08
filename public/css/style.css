@@ -1,0 +1,190 @@
+
+body {
+  margin: 0;
+  min-width: 250px;
+/*  background: linear-gradient(to right, rgb(54,83,100), rgb(158,184,198), rgb(26,44,54));*/
+}
+
+/* Include the padding and border in an element's total width and height */
+* {
+  box-sizing: border-box;
+}
+.innerContainer{
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+
+h2{
+  color:#555;
+}
+/* Remove margins and padding from the list */
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the list items */
+ul li {
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  list-style-type: none;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+  
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Set all odd list items to a different color (zebra-stripes) */
+ul li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+/* Darker background-color on hover */
+ul li:hover {
+  background: #ddd;
+}
+
+/* When clicked on, add a background color and strike out text */
+/*ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+*/
+/* Add a "checked" mark when clicked on */
+/*ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}*/
+
+/* Style the close button */
+.close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 7px 12px 8px 13px;
+    margin-top: 7px;
+    margin-right: 4px;
+    border: 2px;;
+}
+
+.close:hover {
+  background-color: #555;
+  color: white;
+}
+
+/* Style the header */
+.header {
+  /*background-color: #f44336;*/
+    /*background: linear-gradient(to top, rgb(183,183,183), rgb(219,219,219), rgb(221,221,221));*/
+  background-image: url("/images/back3.png");
+  padding: 30px 40px;
+  color: white;
+  text-align: center;
+}
+
+/* Clear floats after the header */
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the input */
+input {
+  border: none;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
+}
+
+/* Style the "Add" button */
+.addBtn {
+    padding: 8px;
+    width: 17%;
+    color: #555;
+    font-size: 16px;
+
+}
+}
+
+.addBtn:hover {
+  background-color: #bbb;
+}
+
+.markAll{
+    padding: 3px;
+    width: 9%;
+    color: #555;
+    font-size: 13px;
+    cursor: pointer;
+    float: left;
+    margin-top: 30px;
+}
+
+.active {
+    padding: 3px;
+    width: 10%;
+    color: #555;
+    font-size: 13px;
+    margin-top: 30px;
+    cursor: pointer;
+ }
+
+.completed {
+    padding: 3px;
+    width: 17%;
+    color: #555;
+    font-size: 13px;
+    cursor: pointer;
+    float: right;
+    margin-right: 35px;
+    margin-top: 30px;
+}
+
+.clearCompleted{
+    padding: 3px;
+    color: #555;
+    font-size: 13px;
+    margin-top: 12px;
+    cursor: pointer;
+    float: right;
+    margin-right: 30px;
+    margin-top: 30px;
+}
+
+.checkBox{
+    width: 2%;
+    height: 18px;
+}
+
+.unmarkAll{
+    padding: 3px;
+    color: #555;
+    font-size: 13px;
+    margin-top: 12px;
+    cursor: pointer;
+    margin-right: 58px;
+    margin-top: 30px;
+
+}
+/***** To change background color on mark all*****/
+/*.liAllMark{
+  background-color:rgb(139,139,139);
+}*/
