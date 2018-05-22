@@ -1,25 +1,27 @@
 const express = require('express');
+const parser = require('body-parser');
+const routes = require('./routes/routesTodo');
 
 var app = express();
+// var fs = require('fs');
 app.set('view engine', 'html');
 app.engine('.html', require('ejs').renderFile);
 app.set('views',__dirname+'/views');
 
 app.use(express.static(__dirname + '/public'));
-
-
-//takes the port number from heroku process.env is used to take port number
-//if it does'nt get any port number it will run locally through port no 3000
 const port = process.env.PORT || 3000;
+app.use(parser.json());
 
-app.get('/', (req,res) => { //it will show about page
-	res.render('indexTodo',{
-	pageTitle: 'todo'
-	});
-});
+app.use(routes);
 
 
-//it will run prog by taking port number from heroku
+// // api call to delete text
+// app.delete('/taskdelete' , (req,res) => {
+// 	var deleteData = req.query;
+//   console.log(deleteData);
+// });
+
+// //it will run prog by taking port number from heroku
 app.listen(port,() => {
-console.log(`server is on port `+port);
+	console.log(`server is on port `+port);
 });

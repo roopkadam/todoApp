@@ -18,6 +18,9 @@ body {
 h2{
   color:#555;
 }
+p{
+   color:#555;
+}
 /* Remove margins and padding from the list */
 ul {
   margin: 0;
@@ -42,9 +45,9 @@ ul li {
 }
 
 /* Set all odd list items to a different color (zebra-stripes) */
-ul li:nth-child(odd) {
+/*ul li:nth-child(odd) {
   background: #f9f9f9;
-}
+}*/
 
 /* Darker background-color on hover */
 ul li:hover {
@@ -185,6 +188,7 @@ input {
 
 }
 /***** To change background color on mark all*****/
-/*.liAllMark{
+.liAllMark{
   background-color:rgb(139,139,139);
-}*/
+  border-bottom: 1px solid white;
+}
