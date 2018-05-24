@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
@@ -26,11 +27,18 @@
     <!-- input displaying table or list -->
     <div id="inputLi" class="inputDiv">
       <ul id="myUL">
-       <% for (var i=0;i<toShowData.length ;i++) {%>
-       <li><span data-id='<%= toShowData[i].id %>' class='inputWrappText'><%= toShowData[i].todoapp %></span>
-         <input type='checkbox' class='checkBox'>
-         <button id='closeButn' class='close'>x</button>
-       </li>
+        <% for (var i=0;i<toShowData.length ;i++) {%>
+          <% if(toShowData[i].status == true) {%>
+           <li class="liAllMark"><span data-id='<%= toShowData[i].id %>' class='inputWrappText'><%= toShowData[i].todoapp %></span>
+              <input type='checkbox' class='checkBox' checked>
+              <button id='closeButn' class='close'>x</button>
+           </li>
+          <% } else {%>
+            <li><span data-id='<%= toShowData[i].id %>' class='inputWrappText'><%= toShowData[i].todoapp %></span>
+              <input type='checkbox' class='checkBox'>
+              <button id='closeButn' class='close'>x</button>
+            </li>
+          <% } %>
         <% } %>
 
       </ul>    

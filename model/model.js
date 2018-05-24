@@ -9,13 +9,15 @@ function getTodo (callBack){
 		callBack(null,parseData);
 	});
 }
+
 // call back function for adding data
 function addTodo(task,callBack) {
 	var generateId=  Math.floor(Math.random() * 26) + Date.now();
 	var objectArray = require('../todo.json');
 	var tempArry = {
 		todoapp: task,
-		id: generateId
+		id: generateId,
+		status:false
 	}
 	objectArray.push(tempArry);
 	fs.writeFile(path.join(__dirname,'../todo.json'), JSON.stringify(objectArray), 'utf-8', function(err,data) {	
@@ -23,29 +25,50 @@ function addTodo(task,callBack) {
 		console.log("from model----------------------------------",objectArray);
 		callBack(null,tempArry);
 	});
-	// callBack(tempArry);
 }
 
+//delete function to delete data from json file
 function deleteTodo(taskDelete,callback){
-	// var obj = todoArrayAfterDelete;
-	  fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
+	function remove(array, element) {
+		var x = array.filter(e => e.id != element);
+		return x;
+	}
+	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
+		var todoArray = JSON.parse(data);	
 		if (err) callback(err);
-		var todoArray = JSON.parse(data);
-    function remove(array, element) {
-     return array.filter(todoArray => todoArray.id !== element);
-   }
-     var todoAfterDelete = remove(todoArray, taskDelete.id)
-		 console.log("from delete--------",todoAfterDelete)
-   // console.log("==========",todoArray)
-
-		// obj = todoArrayAfterDelete;
-		// fs.writeFile(path.join(__dirname,'../todo.json'),JSON.parse(todoArray),'utf-8', function(err,data){
-		// 	if (err) callBack(err)
-		// 	console.log('task deleted',todoArray);
-		// 	callback(null,todoArray);
-		// });
+		var todoDeletedArray = remove(todoArray,taskDelete)
+		fs.writeFile('./todo.json', JSON.stringify(todoDeletedArray), 'utf-8', function(err,data) {
+			if (err) throw err
+			console.log("done",todoDeletedArray);
+		})
+		callback(null,"success");
 	});
 }
 
-module.exports ={getTodo,addTodo,deleteTodo};
+
+//update function to update status on click of check button
+function updateStatusTodo(updateSts,callback){
+	console.log("in model", updateSts);
+	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
+		var todoArray = JSON.parse(data);	
+		if (err) callback(err);
+		function statusChange(updateSts){
+			todoArray.forEach(function(element) {
+				console.log("elementttttttttt",element)
+				if(element.id == updateSts)
+				element.status = !element.status;
+			});
+			console.log(todoArray);
+		}
+		statusChange(updateSts)
+		fs.writeFile('./todo.json', JSON.stringify(todoArray), 'utf-8', function(err,data) {
+			if (err) throw err
+			console.log("done",todoArray);
+		});
+	});//readfile
+	callback(null,"success")
+}
+
+
+module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo};
 

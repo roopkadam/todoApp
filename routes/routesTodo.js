@@ -8,6 +8,7 @@ const cntrl = require('./../controller/controllerTodo');
  router.get('/', cntrl.getTodo);
  router.post('/taskadd', cntrl.addTodo)
  router.delete('/taskdelete/:id',cntrl.deleteTodo)
+ router.put('/updateStatus/:id', cntrl.updateStatusTodo)
 
 
 module.exports = router;

@@ -33,7 +33,10 @@ var addTodo =function (req,res){
   });
 }
 
-
+/**
+* @function deleteTodo (req,res)
+* @description: function is usede to deleting data from json file
+*/
 var deleteTodo = function(req,res){
 	console.log("controllerrr")
   var taskDelete = req.params.id
@@ -42,14 +45,23 @@ var deleteTodo = function(req,res){
 		if(err!=null){
 			console.log(err);
 		}else{
-			// var deleteData = req.query;
 			res.send(data);
-			
 		}
 	});
 }
 
 
+var updateStatusTodo = function(req,res){
+	console.log("in updateStatusTodo")
+	var updateSts = req.params.id
+	console.log("updateeeeee",updateSts)
+	modules.updateStatusTodo(updateSts,function(err,data){
+		if(err!=null){
+			console.log(err);
+		}else{
+			res.send(data);
+		}
+	});
+}
 
-
-module.exports = {getTodo,addTodo,deleteTodo};
+module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo};
