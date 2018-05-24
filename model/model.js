@@ -54,7 +54,6 @@ function updateStatusTodo(updateSts,callback){
 		if (err) callback(err);
 		function statusChange(updateSts){
 			todoArray.forEach(function(element) {
-				console.log("elementttttttttt",element)
 				if(element.id == updateSts)
 				element.status = !element.status;
 			});
@@ -65,10 +64,25 @@ function updateStatusTodo(updateSts,callback){
 			if (err) throw err
 			console.log("done",todoArray);
 		});
+			callback(null,"success")
 	});//readfile
-	callback(null,"success")
 }
 
 
-module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo};
+function markAllTodo(callback) {
+	console.log("------------------------")
+		fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
+		var todoArray = JSON.parse(data);	
+		if (err) callback(err);
+			todoArray.forEach(function(element) {
+				element.status = true;
+		});
+			fs.writeFile('./todo.json', JSON.stringify(todoArray), 'utf-8', function(err,data) {
+			if (err) throw err
+			console.log("done",todoArray);
+		});
+     callback(null,"success")
+});
+}
+module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo};
 

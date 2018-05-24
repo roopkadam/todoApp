@@ -40,7 +40,7 @@ var addTodo =function (req,res){
 var deleteTodo = function(req,res){
 	console.log("controllerrr")
   var taskDelete = req.params.id
-  console.log("-----------------",taskDelete)
+  console.log(taskDelete)
 	modules.deleteTodo(taskDelete,function(err,data){
 		if(err!=null){
 			console.log(err);
@@ -52,9 +52,7 @@ var deleteTodo = function(req,res){
 
 
 var updateStatusTodo = function(req,res){
-	console.log("in updateStatusTodo")
 	var updateSts = req.params.id
-	console.log("updateeeeee",updateSts)
 	modules.updateStatusTodo(updateSts,function(err,data){
 		if(err!=null){
 			console.log(err);
@@ -64,4 +62,15 @@ var updateStatusTodo = function(req,res){
 	});
 }
 
-module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo};
+var markAllTodo = function(req,res) {
+	console.log("in markAll function")
+	modules.markAllTodo(function(err,data){
+		if(err !=null){
+			console.log(err);
+		}else{
+			res.send(data);
+		}
+	});
+}
+
+module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo};

@@ -14,22 +14,21 @@ function newElement() {
   }
   else {
     $.ajax({
-    type: 'POST',
-    data: JSON.stringify(data),
-    contentType: 'application/json',
-    url: 'http://localhost:3000/taskadd',            
-    success: function(data) {
+      type: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      url: 'http://localhost:3000/taskadd',            
+      success: function(data) {
       console.log(JSON.stringify(data));
-      // var t = document.createTextNode(inputValue);
-      console.log(li)
-      li.innerHTML="<input type='checkbox' class='checkBox'><span data-id="+data.id+"class='inputWrappText'>"+data.todoapp+"</span> <button  id='closeButn' class='close'>x</button>";
-      document.getElementById("myUL").appendChild(li);
-     }
-   });
- }  
- document.getElementById("myInput").value="";
+        console.log(li)
+        li.innerHTML="<input type='checkbox' class='checkBox'><span data-id="+data.id+"class='inputWrappText'>"+data.todoapp+"</span> <button  id='closeButn' class='close'>x</button>";
+        document.getElementById("myUL").appendChild(li);
+      }
+    });
+  }  
+  document.getElementById("myInput").value="";
 }   
-      
+
 
 $(document).ready(function(){
   $("ul").on('click','#closeButn',function() {
@@ -42,7 +41,7 @@ $(document).ready(function(){
       type: 'delete',
       contentType: 'application/json',
       success: function(result) {
-        $(thisName).parent().remove('li');
+       $(thisName).parent().remove('li');
       }
     });
   });
@@ -50,36 +49,49 @@ $(document).ready(function(){
 
   //for checking all check box onclick of mark all button
   $(".markAll").click(function(){
-    $("li").addClass("liAllMark")
-    $(".checkBox").attr("checked","checked");
+      $.ajax({
+        url: '/markAllClick',
+        type: 'PUT',
+        contentType: 'application/json',
+        success:function(){
+         $("li").addClass("liAllMark")
+         $(".checkBox").attr("checked","checked");
+        }
+    });
   });
-//for un-checking all check box onclick of unmark all button 
+
+
+
+  //for un-checking all check box onclick of unmark all button 
   $(".unmarkAll").click(function(){
     $("li").removeClass("liAllMark")
     $(".checkBox").removeAttr("checked");
     return false;
   });
 
+
+
+
   //background color when checked
   $('.checkBox').on('change', function() {
-    //ajax call for changing status on on checkbox
     var nameThis = this;
     console.log("im in change")
     var removingText =$(this).parent().find('.inputWrappText').attr("data-id");
+    //ajax call for changing status on on checkbox
     $.ajax({
       url: '/updateStatus/'+removingText,
       type: 'PUT',
       contentType: 'application/json',
       success:function(){
         if ($(nameThis).is(":checked")) {
-         $(nameThis).parent().addClass("liAllMark")
+          $(nameThis).parent().addClass("liAllMark")
         }
         else {
           $(nameThis).parent().removeClass("liAllMark")
         }
       }
+    });
   });
-});
 });
 
 
