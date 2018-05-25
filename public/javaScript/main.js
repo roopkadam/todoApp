@@ -21,13 +21,14 @@ function newElement() {
       success: function(data) {
       console.log(JSON.stringify(data));
         console.log(li)
-        li.innerHTML="<input type='checkbox' class='checkBox'><span data-id="+data.id+"class='inputWrappText'>"+data.todoapp+"</span> <button  id='closeButn' class='close'>x</button>";
+        li.innerHTML="<input type='checkbox' class='checkBox'><input type='text' data-id="+data.id+"class='inputWrappText' value="+data.todoapp+"> <button  id='closeButn' class='close'>x</button>";
         document.getElementById("myUL").appendChild(li);
       }
     });
   }  
   document.getElementById("myInput").value="";
 }   
+
 
 
 $(document).ready(function(){
@@ -54,8 +55,8 @@ $(document).ready(function(){
         type: 'PUT',
         contentType: 'application/json',
         success:function(){
-         // $("li").addClass("liAllMark")
-         $(".checkBox").attr("checked","checked");
+         $("li").addClass("liAllMark")
+         $('input[type=checkbox]').prop('checked', true);
         }
     });
   });
@@ -64,13 +65,14 @@ $(document).ready(function(){
 
   //for un-checking all check box onclick of unmark all button 
   $(".unmarkAll").click(function(){
+
      $.ajax({
         url:'/unmarkAllClick',
         type:'PUT',
         contentType: 'application/json',
         success:function(){
-          // $("li").removeClass("liAllMark")
-          $(".checkBox").removeAttr("checked");
+          $("li").removeClass("liAllMark")
+         $('input[type=checkbox]').prop('checked', false);
           return false;
         }
       });
@@ -91,10 +93,33 @@ $(document).ready(function(){
       success:function(){
         if ($(nameThis).is(":checked")) {
           $(nameThis).parent().addClass("liAllMark")
+         $(nameThis).prop('checked', true);
         }
         else {
-          $(nameThis).parent().removeClass("liAllMark")
+          $(nameThis).parent().removeClass("liAllMark");
+         $(nameThis).prop('checked', false);
         }
+      }
+    });
+  });
+
+
+  $(".active").click(function() {
+    console.log("active button is clicked");
+    var thisName = this;
+    $.ajax({
+      url:'/activeButnClick',
+      type:'PUT',
+      contentType: 'application/json',
+      success:function(active){
+        console.log(JSON.stringify(active));
+        console.log("activeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",active)
+        for (var i=0;i<active[i].length ;i++) {
+
+         // $(".activeTodo").append("<input type='checkbox' class='checkBox'><input type='text' data-id="+active.id+"class='inputWrappText' value="+active.todoapp+"> <button  id='closeButn' class='close'>x</button>");
+        }
+    
+      console.log("coming here")
       }
     });
   });

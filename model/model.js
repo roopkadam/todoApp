@@ -59,10 +59,11 @@ function updateStatusTodo(updateSts,callback){
 			});
 			console.log(todoArray);
 		}
+			console.log("data::::::::::::::::::::::::::::::::::",todoArray);
+
 		statusChange(updateSts)
 		fs.writeFile('./todo.json', JSON.stringify(todoArray), 'utf-8', function(err,data) {
 			if (err) throw err
-			console.log("done",todoArray);
 		});
 			callback(null,"success")
 	});//readfile
@@ -99,5 +100,23 @@ function unmarkAllTodo(callback){
 			callback(null,"success")
 	});
 }
-module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo};
+
+function activeTodo(callback){
+	console.log("in active model");
+	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
+		var todoArray = JSON.parse(data);	
+		console.log("**********************",todoArray)
+		if (err) callback(err);
+		var activeArray = todoArray.filter(function(element){
+			console.log("&&&&&&&&&&&&&&&&&&&",element)
+			if(element.status == true){
+			return element;
+			}
+		});	
+		callback(null,activeArray)
+	});
+}
+
+
+module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo};
 

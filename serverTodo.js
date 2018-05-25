@@ -14,13 +14,6 @@ app.use(parser.json());
 
 app.use(routes);
 
-
-// // api call to delete text
-// app.delete('/taskdelete' , (req,res) => {
-// 	var deleteData = req.query;
-//   console.log(deleteData);
-// });
-
 // //it will run prog by taking port number from heroku
 app.listen(port,() => {
 	console.log(`server is on port `+port);

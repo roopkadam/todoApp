@@ -15,6 +15,11 @@ body {
     margin-top: 15px;
 }
 
+.disp {
+    display: none;
+}
+
+
 h2{
   color:#555;
 }
@@ -81,8 +86,8 @@ ul li:hover {
     right: 0;
     top: 0;
     padding: 7px 12px 8px 13px;
-    margin-top: 7px;
-    margin-right: 4px;
+    margin-top: 18px;
+    margin-right: 13px;
     border: 2px;;
 }
 
@@ -111,12 +116,11 @@ ul li:hover {
 /* Style the input */
 input {
   border: none;
-  width: 75%;
+  width: 82%;
   padding: 10px;
-  float: left;
+  /*float: left;*/
   font-size: 16px;
 }
-
 /* Style the "Add" button */
 .addBtn {
     padding: 8px;
@@ -130,10 +134,20 @@ input {
 .addBtn:hover {
   background-color: #bbb;
 }
+.allTask{
+    padding: 3px;
+    width: 12%;
+    color: #555;
+    font-size: 13px;
+    cursor: pointer;
+    float: left;
+    margin-top: 30px;
+    margin-right: 19px;
+}
 
 .markAll{
     padding: 3px;
-    width: 9%;
+    width: 12%;
     color: #555;
     font-size: 13px;
     cursor: pointer;
@@ -143,7 +157,7 @@ input {
 
 .active {
     padding: 3px;
-    width: 10%;
+    width: 13%;
     color: #555;
     font-size: 13px;
     margin-top: 30px;
@@ -168,13 +182,13 @@ input {
     margin-top: 12px;
     cursor: pointer;
     float: right;
-    margin-right: 30px;
+    /*margin-right: 30px;*/
     margin-top: 30px;
 }
 
 .checkBox{
-    width: 2%;
-    height: 18px;
+    width: 5%;
+    height: 19px;
 }
 
 .unmarkAll{
@@ -183,12 +197,13 @@ input {
     font-size: 13px;
     margin-top: 12px;
     cursor: pointer;
-    margin-right: 58px;
+    margin-right: 15px;
     margin-top: 30px;
+    width: 15%;
 
 }
 /***** To change background color on mark all*****/
 .liAllMark{
-  background-color:rgb(139,139,139);
+/*  background-color:rgb(139,139,139);*/
   border-bottom: 1px solid white;
 }

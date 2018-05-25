@@ -11,6 +11,7 @@ const cntrl = require('./../controller/controllerTodo');
  router.put('/updateStatus/:id', cntrl.updateStatusTodo)
  router.put('/markAllClick', cntrl.markAllTodo);
  router.put('/unmarkAllClick', cntrl.unmarkAllTodo);
+ router.put('/activeButnClick',cntrl.activeTodo)
 
 
 module.exports = router;

@@ -5,7 +5,6 @@ var modules = require('./../model/model');
 */
 
 var getTodo = function(req,res){
-	console.log('---------')
 		modules.getTodo(function(err,data){
 			if(err!=null){
 				console.log(err);
@@ -68,6 +67,7 @@ var markAllTodo = function(req,res) {
 		if(err !=null){
 			console.log(err);
 		}else{
+			console.log(data);
 			res.send(data);
 		}
 	});
@@ -79,8 +79,26 @@ var unmarkAllTodo = function(req,res){
 		if(err != null){
 			console.log(err);
 		} else {
+			console.log(data);
+
 			res.send(data);
 		}
 	});
 }
-module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo};
+
+var activeTodo = function(req,res) {
+	console.log("in active controller")
+		var task = req.body.data;
+			modules.activeTodo(function(err,data){
+      console.log("in active controller")
+      if(err != null){
+			 console.log(err);
+		  } else {
+			 console.log(data);
+			 res.send(data);
+			 console.log("active arrayyyyyyyyyyyy",data)
+		  }
+		});
+	}
+
+module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo};

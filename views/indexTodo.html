@@ -16,8 +16,8 @@
       <!-- input text box -->
       <input type="text" id="myInput" placeholder="Title...">
       <!-- input buttons -->
-
       <button onclick="newElement()" class="addBtn">Add</button><br>
+      <button class="allTask">All Task</button>
       <button class="markAll">Mark All</button> 
       <button class="unmarkAll">Un-Mark All</button> 
       <button class="active">Active</button>
@@ -29,21 +29,36 @@
       <ul id="myUL">
         <% for (var i=0;i<toShowData.length ;i++) {%>
           <% if(toShowData[i].status == true) {%>
-           <li class="liAllMark"><span data-id='<%= toShowData[i].id %>' class='inputWrappText'><%= toShowData[i].todoapp %></span>
+           <li class="liAllMark">
               <input type='checkbox' class='checkBox' checked>
+              <input type='text' data-id='<%= toShowData[i].id %>' class='inputWrappText' value='<%= toShowData[i].todoapp %>'>
               <button id='closeButn' class='close'>x</button>
            </li>
           <% } else {%>
-            <li><span data-id='<%= toShowData[i].id %>' class='inputWrappText'><%= toShowData[i].todoapp %></span>
+            <li>
               <input type='checkbox' class='checkBox'>
+              <input type='text' data-id='<%= toShowData[i].id %>' class='inputWrappText' value='<%= toShowData[i].todoapp %>'>
               <button id='closeButn' class='close'>x</button>
             </li>
           <% } %>
         <% } %>
-
-      </ul>    
-    </div>
   </div>
+
+    <script>
+    /*jquerry for switching div */
+    $('.allTask').click(function()
+      {
+        $('.inputDiv').removeClass('disp');
+        $('.completedDiv').addClass('disp');
+      })
+      /*View grid*/
+      $('.completed').click(function()
+       {
+        $('.completedDiv').removeClass('disp');
+        $('.inputDiv').addClass('disp');
+       })
+  
+  </script>
 <script src="/javaScript/main.js"></script>
 </body>
 </html>
