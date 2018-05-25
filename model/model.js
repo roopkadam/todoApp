@@ -109,7 +109,7 @@ function activeTodo(callback){
 		if (err) callback(err);
 		var activeArray = todoArray.filter(function(element){
 			console.log("&&&&&&&&&&&&&&&&&&&",element)
-			if(element.status == true){
+			if(element.status != true){
 			return element;
 			}
 		});	
