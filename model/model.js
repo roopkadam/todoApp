@@ -84,5 +84,20 @@ function markAllTodo(callback) {
      callback(null,"success")
 });
 }
-module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo};
+
+function unmarkAllTodo(callback){
+	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
+		var todoArray = JSON.parse(data);	
+		if (err) callback(err);
+		todoArray.forEach(function(element){
+			element.status = false;
+		});	
+		fs.writeFile('./todo.json', JSON.stringify(todoArray), 'utf-8', function(err,data) {
+			if (err) throw err
+			console.log("unmark All done",todoArray);
+		});
+			callback(null,"success")
+	});
+}
+module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo};
 

@@ -73,4 +73,14 @@ var markAllTodo = function(req,res) {
 	});
 }
 
-module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo};
+var unmarkAllTodo = function(req,res){
+	console.log("in unmarkall controller")
+	modules.unmarkAllTodo(function(err,data){
+		if(err != null){
+			console.log(err);
+		} else {
+			res.send(data);
+		}
+	});
+}
+module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo};

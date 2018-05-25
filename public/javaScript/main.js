@@ -54,7 +54,7 @@ $(document).ready(function(){
         type: 'PUT',
         contentType: 'application/json',
         success:function(){
-         $("li").addClass("liAllMark")
+         // $("li").addClass("liAllMark")
          $(".checkBox").attr("checked","checked");
         }
     });
@@ -64,11 +64,17 @@ $(document).ready(function(){
 
   //for un-checking all check box onclick of unmark all button 
   $(".unmarkAll").click(function(){
-    $("li").removeClass("liAllMark")
-    $(".checkBox").removeAttr("checked");
-    return false;
+     $.ajax({
+        url:'/unmarkAllClick',
+        type:'PUT',
+        contentType: 'application/json',
+        success:function(){
+          // $("li").removeClass("liAllMark")
+          $(".checkBox").removeAttr("checked");
+          return false;
+        }
+      });
   });
-
 
 
 
