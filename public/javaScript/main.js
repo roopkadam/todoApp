@@ -10,7 +10,7 @@ function newElement() {
 
   //for displaying the li list we enter 
   if (inputValue.trim() === "") {
-    alert("You have to add text here");
+   alert("You have to add text here");
   }
   else {
     $.ajax({
@@ -19,10 +19,10 @@ function newElement() {
       contentType: 'application/json',
       url: 'http://localhost:3000/taskadd',
       success: function (data) {
-        console.log(JSON.stringify(data));
-        console.log(li)
-        li.innerHTML = "<input type='checkbox' class='checkBox'><input type='text' data-id=" + data.id + "class='inputWrappText' value=" + data.todoapp + "> <button  id='closeButn' class='close'>x</button>";
-        document.getElementById("myUL").appendChild(li);
+      console.log(JSON.stringify(data));
+      console.log(li)
+      li.innerHTML = "<input type='checkbox' class='checkBox'><input type='text' data-id=" + data.id + "class='inputWrappText' value=" + data.todoapp + "> <button  id='closeButn' class='close'>x</button>";
+      document.getElementById("myUL").appendChild(li);
       }
     });
   }
@@ -30,18 +30,17 @@ function newElement() {
 }
 
 
-
+//ajax call to delete element
 $(document).ready(function () {
   $("ul").on('click', '#closeButn', function () {
-    //ajax call to delete element
     var thisName = this;
     var removingText = $(this).parent().find('.inputWrappText').attr("data-id");
     console.log(removingText)
     $.ajax({
-      url: '/taskdelete/' + removingText,
-      type: 'delete',
-      contentType: 'application/json',
-      success: function (result) {
+        url: '/taskdelete/' + removingText,
+        type: 'delete',
+        contentType: 'application/json',
+        success: function (result) {
         $(thisName).parent().remove('li');
       }
     });
@@ -55,8 +54,8 @@ $(document).ready(function () {
       type: 'PUT',
       contentType: 'application/json',
       success: function () {
-        $("li").addClass("liAllMark")
-        $('input[type=checkbox]').prop('checked', true);
+      $("li").addClass("liAllMark")
+      $('input[type=checkbox]').prop('checked', true);
       }
     });
   });
@@ -71,9 +70,9 @@ $(document).ready(function () {
       type: 'PUT',
       contentType: 'application/json',
       success: function () {
-        $("li").removeClass("liAllMark")
-        $('input[type=checkbox]').prop('checked', false);
-        return false;
+      $("li").removeClass("liAllMark")
+      $('input[type=checkbox]').prop('checked', false);
+      return false;
       }
     });
   });
@@ -103,13 +102,19 @@ $(document).ready(function () {
     });
   });
 
- //ajax call for all button click
+
+  //ajax call for all button click
   $(".allTask").click(function(){
-    $('.activeDiv').removeClass('disp');
-    $('.completedDiv').removeClass('disp');
+    $('.inputDiv').removeClass('disp');
+    $('.activeDiv').addClass('disp');
+    $('.completedDiv').addClass('disp');
   });
 
+
+
+  //ajax call for click on active button
   $(".active").click(function() {  
+    $(".activeDiv").html("");
     console.log("active button is clicked");
     var thisName = this;
     $.ajax({
@@ -117,37 +122,60 @@ $(document).ready(function () {
       type: 'PUT',
       contentType: 'application/json',
       success:function(active){
-        $('.activeDiv').removeClass('disp');
-        $('.completedDiv').addClass('disp');
-
         console.log(JSON.stringify(active));
         console.log("active",active)
-        for (var i=0;i<active[i].length ;i++){
-          var li=$("<li></li>")
-          if($ (li.className) =="liAllMark"){
-            console.log(k);
-            $(li.setAttribute("style", "display: none;"));
+        for (var i=0;i<active.length ;i++){
+          $(".activeDiv").append("<li><input type='checkbox' class='checkBox'><input type='text' data-id="+active[i].id+"class='inputWrappText' value="+active[i].todoapp+"> <button id='closeButn' class='close'>x</button></li>")
           }
-          // $(".active").append("<li><input type='checkbox' class='checkBox'><input type='text' data-id="+active.id+"class='inputWrappText' value="+active.todoapp+"> <button id='closeButn' class='close'>x</button></li>")
-        }
-      console.log("coming here",active)
+          $('.activeDiv').removeClass('disp');
+          $('.inputDiv').addClass('disp');
+          $('.completedDiv').addClass('disp');
       }
     });
   });
-//ajax call for complete button click
+
+
+
+  //ajax call for complete button click
   $(".completed").click(function() {
+    $(".completedDiv").html("");
+    console.log("completed button is clicked");
+    var thisName = this;
+    $.ajax({
+      url: '/completedButnClick',
+      type: 'PUT',
+      contentType: 'application/json',
+      success:function(active){
+        console.log(JSON.stringify(active));
+        console.log("activeeeeeeeeeeeeeeeee",active)
+        for (var i=0;i<active.length ;i++){
+          $(".completedDiv").append("<li><input type='checkbox' class='checkBox'><input type='text' data-id="+active[i].id+"class='inputWrappText' value="+active[i].todoapp+"> <button id='closeButn' class='close'>x</button></li>")
+          }    
     $('.completedDiv').removeClass('disp');
+    $('.inputDiv').addClass('disp');
     $('.activeDiv').addClass('disp');
+    }
+  });
+ });
+
+
+  $(".clearCompleted").click(function(){
+    console.log("clear completed button click")
+    var thisName = this;
+    $.ajax({
+      url: '/clearCompleteButnClick',
+      type: 'delete',
+      contentType: 'application/json',
+      success: function () {
+        debugger;
+        console.log("clear completed Sucessssssssssssssssssssss")
+        $(thisName).remove('li');
+    }
   });
 });
 
 
-        var li = document.createElement("li");
-        var node = document.getElementById("myUL");
-        var lis = document.getElementById("myUL").getElementsByTagName("li");
-        for (var k in lis) {
-          if (lis[k].className == "liAllMark") {
-            console.log(lis[k])
-            lis[k].setAttribute("style", "display: none;");
-          }
-        }
+
+});
+
+

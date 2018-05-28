@@ -12,6 +12,8 @@ const cntrl = require('./../controller/controllerTodo');
  router.put('/markAllClick', cntrl.markAllTodo);
  router.put('/unmarkAllClick', cntrl.unmarkAllTodo);
  router.put('/activeButnClick',cntrl.activeTodo)
+ router.put('/completedButnClick',cntrl.completeTodo)
+ router.delete('/clearCompleteButnClick',cntrl.clearCompTodo)
 
 
 module.exports = router;

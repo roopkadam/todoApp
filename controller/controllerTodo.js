@@ -101,4 +101,31 @@ var activeTodo = function(req,res) {
 		});
 	}
 
-module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo};
+
+	var completeTodo =function(req,res){
+		modules.completeTodo(function(err,data){
+		console.log("in complete controller");	
+		  if(err != null){
+			console.log(err);
+		  } else {
+			 console.log(data);
+			 res.send(data);
+		  }
+	 });
+ }
+
+ var clearCompTodo = function(req,res){
+ 	modules.clearCompTodo(function(err,data){
+ 	console.log("in clear complete controller");
+		if(err != null){
+		console.log(err);
+	  } else {
+		 res.send(data);
+		 console.log("?????????????????",data);
+	   }
+	 });
+ }
+
+
+
+module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo,completeTodo,clearCompTodo};

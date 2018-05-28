@@ -27,14 +27,17 @@ function addTodo(task,callBack) {
 	});
 }
 
+
 //delete function to delete data from json file
 function deleteTodo(taskDelete,callback){
 	function remove(array, element) {
+		console.log("~~~~~~~~~~~~~~~~~~~~~~~~~",element);
 		var x = array.filter(e => e.id != element);
 		return x;
 	}
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
+		console.log("@@@@@@@@@@@@",todoArray)
 		if (err) callback(err);
 		var todoDeletedArray = remove(todoArray,taskDelete)
 		fs.writeFile('./todo.json', JSON.stringify(todoDeletedArray), 'utf-8', function(err,data) {
@@ -118,5 +121,42 @@ function activeTodo(callback){
 }
 
 
-module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo};
+function completeTodo(callback){
+	console.log("in complete model");
+	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
+		var todoArray = JSON.parse(data);	
+		console.log("1111111111111111111111",todoArray)
+		if (err) callback(err);
+		var completeArray = todoArray.filter(function(element){
+			if(element.status !=false){
+				return element;
+			}
+		});
+		callback(null,completeArray);
+		// console.log("aaaaaaaaaaaaaaaaaaaaa",completeArray)
+   });
+ }
 
+
+function clearCompTodo(callback){
+	function remove(array) {
+		var x = array.filter(e => e.status != true);
+		return x;
+	}
+		fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
+		var todoArray = JSON.parse(data);	
+		if (err) callback(err);
+		console.log("@@@@@@@@@@@@",todoArray)
+		var todoDeletedArray = remove(todoArray)
+		console.log("aaaaaaaaaaaaaaaaa",todoDeletedArray) 
+
+			fs.writeFile('./todo.json', JSON.stringify(todoDeletedArray), 'utf-8', function(err,data) {
+			if (err) throw err
+			console.log(" clear completed All done",todoDeletedArray);
+		});
+			callback(null,"success");
+	});
+ }
+
+
+module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo,completeTodo,clearCompTodo};
