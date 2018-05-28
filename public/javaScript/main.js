@@ -124,7 +124,11 @@ $(document).ready(function(){
         console.log("active",active)
         for (var i=0;i<active[i].length ;i++){
           var li=$("<li></li>")
-          $(".activeDiv").append("<li><input type='checkbox' class='checkBox'><input type='text' data-id="+active[i].id+"class='inputWrappText' value="+active[i].todoapp+"> <button id='closeButn' class='close'>x</button></li>")
+          if($ (li.className) =="liAllMark"){
+            console.log(k);
+            $(li.setAttribute("style", "display: none;"));
+          }
+          // $(".active").append("<li><input type='checkbox' class='checkBox'><input type='text' data-id="+active.id+"class='inputWrappText' value="+active.todoapp+"> <button id='closeButn' class='close'>x</button></li>")
         }
       console.log("coming here",active)
       }
