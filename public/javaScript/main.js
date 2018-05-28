@@ -142,12 +142,12 @@ $(document).ready(function(){
 });
 
 
-        // var li = document.createElement("li");
-        // var node = document.getElementById("myUL");
-        // var lis = document.getElementById("myUL").getElementsByTagName("li");
-        // for (var k in lis) {
-        //   if (lis[k].className == "liAllMark") {
-        //     console.log(lis[k])
-        //     lis[k].setAttribute("style", "display: none;");
-        //   }
-        // }
+        var li = document.createElement("li");
+        var node = document.getElementById("myUL");
+        var lis = document.getElementById("myUL").getElementsByTagName("li");
+        for (var k in lis) {
+          if (lis[k].className == "liAllMark") {
+            console.log(lis[k])
+            lis[k].setAttribute("style", "display: none;");
+          }
+        }
