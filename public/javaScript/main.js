@@ -103,8 +103,13 @@ $(document).ready(function(){
     });
   });
 
+ //ajax call for all button click
+  $(".allTask").click(function(){
+    $('.activeDiv').removeClass('disp');
+    $('.completedDiv').removeClass('disp');
+  });
 
-  $(".active").click(function() {
+  $(".active").click(function() {  
     console.log("active button is clicked");
     var thisName = this;
     $.ajax({
@@ -112,17 +117,33 @@ $(document).ready(function(){
       type:'PUT',
       contentType: 'application/json',
       success:function(active){
-        console.log(JSON.stringify(active));
-        console.log("activeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",active)
-        for (var i=0;i<active[i].length ;i++) {
+        $('.activeDiv').removeClass('disp');
+        $('.completedDiv').addClass('disp');
 
-         // $(".activeTodo").append("<input type='checkbox' class='checkBox'><input type='text' data-id="+active.id+"class='inputWrappText' value="+active.todoapp+"> <button  id='closeButn' class='close'>x</button>");
+        console.log(JSON.stringify(active));
+        console.log("active",active)
+        for (var i=0;i<active[i].length ;i++){
+          var li=$("<li></li>")
+          $(".activeDiv").append("<li><input type='checkbox' class='checkBox'><input type='text' data-id="+active[i].id+"class='inputWrappText' value="+active[i].todoapp+"> <button id='closeButn' class='close'>x</button></li>")
         }
-    
-      console.log("coming here")
+      console.log("coming here",active)
       }
     });
+  });
+//ajax call for complete button click
+  $(".completed").click(function() {
+    $('.completedDiv').removeClass('disp');
+    $('.activeDiv').addClass('disp');
   });
 });
 
 
+        // var li = document.createElement("li");
+        // var node = document.getElementById("myUL");
+        // var lis = document.getElementById("myUL").getElementsByTagName("li");
+        // for (var k in lis) {
+        //   if (lis[k].className == "liAllMark") {
+        //     console.log(lis[k])
+        //     lis[k].setAttribute("style", "display: none;");
+        //   }
+        // }

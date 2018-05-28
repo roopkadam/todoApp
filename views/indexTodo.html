@@ -43,22 +43,9 @@
           <% } %>
         <% } %>
   </div>
-
-    <script>
-    /*jquerry for switching div */
-    $('.allTask').click(function()
-      {
-        $('.inputDiv').removeClass('disp');
-        $('.completedDiv').addClass('disp');
-      })
-      /*View grid*/
-      $('.completed').click(function()
-       {
-        $('.completedDiv').removeClass('disp');
-        $('.inputDiv').addClass('disp');
-       })
-  
-  </script>
+  <div class="activeDiv disp">active div</div>
+  <div class="completedDiv disp"><p> completed Div</p></div>
+</div>
 <script src="/javaScript/main.js"></script>
 </body>
 </html>
