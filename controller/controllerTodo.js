@@ -49,7 +49,10 @@ var deleteTodo = function(req,res){
 	});
 }
 
-
+/**
+* @function updateStatusTodo (req,res)
+* @description: function is usede for updating the status
+*/
 var updateStatusTodo = function(req,res){
 	var updateSts = req.params.id
 	modules.updateStatusTodo(updateSts,function(err,data){
@@ -61,6 +64,10 @@ var updateStatusTodo = function(req,res){
 	});
 }
 
+/**
+* @function markAllTodo (req,res)
+* @description: function is to mark all the elements
+*/
 var markAllTodo = function(req,res) {
 	console.log("in markAll function")
 	modules.markAllTodo(function(err,data){
@@ -73,6 +80,10 @@ var markAllTodo = function(req,res) {
 	});
 }
 
+/**
+* @function unmarkAllTodo (req,res)
+* @description: function is to unmark all the elements
+*/
 var unmarkAllTodo = function(req,res){
 	console.log("in unmarkall controller")
 	modules.unmarkAllTodo(function(err,data){
@@ -86,6 +97,10 @@ var unmarkAllTodo = function(req,res){
 	});
 }
 
+/**
+* @function unmarkAllTodo (req,res)
+* @description: function is to show the active task
+*/
 var activeTodo = function(req,res) {
 	console.log("in active controller")
 		var task = req.body.data;
@@ -101,7 +116,10 @@ var activeTodo = function(req,res) {
 		});
 	}
 
-
+/**
+* @function completeTodo (req,res)
+* @description: function is to show the completed task
+*/
 	var completeTodo =function(req,res){
 		modules.completeTodo(function(err,data){
 		console.log("in complete controller");	
@@ -114,6 +132,10 @@ var activeTodo = function(req,res) {
 	 });
  }
 
+/**
+* @function completeTodo (req,res)
+* @description: function is to remove all the completed task
+*/
  var clearCompTodo = function(req,res){
  	modules.clearCompTodo(function(err,data){
  	console.log("in clear complete controller");

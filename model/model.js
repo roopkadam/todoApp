@@ -10,7 +10,10 @@ function getTodo (callBack){
 	});
 }
 
-// call back function for adding data
+/**
+* @function addTodo (task,callBack)
+* @description: function is for adding data in json file
+*/
 function addTodo(task,callBack) {
 	var generateId=  Math.floor(Math.random() * 26) + Date.now();
 	var objectArray = require('../todo.json');
@@ -27,8 +30,10 @@ function addTodo(task,callBack) {
 	});
 }
 
-
-//delete function to delete data from json file
+/**
+* @function deleteTodo(taskDelete,callback)
+* @description: function is for deleting data from json file
+*/
 function deleteTodo(taskDelete,callback){
 	function remove(array, element) {
 		console.log("~~~~~~~~~~~~~~~~~~~~~~~~~",element);
@@ -48,8 +53,10 @@ function deleteTodo(taskDelete,callback){
 	});
 }
 
-
-//update function to update status on click of check button
+/**
+* @function updateStatusTodo(updateSts,callback)
+* @description: function is for updating status on click of check button in json file 
+*/
 function updateStatusTodo(updateSts,callback){
 	console.log("in model", updateSts);
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
@@ -72,7 +79,10 @@ function updateStatusTodo(updateSts,callback){
 	});//readfile
 }
 
-
+/**
+* @function markAllTodo(callback)
+* @description: function is to check all the elements
+*/
 function markAllTodo(callback) {
 	console.log("------------------------")
 		fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
@@ -89,6 +99,10 @@ function markAllTodo(callback) {
 });
 }
 
+/**
+* @function unmarkAllTodo(callback)
+* @description: function is to uncheck all the elements
+*/
 function unmarkAllTodo(callback){
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
@@ -104,6 +118,10 @@ function unmarkAllTodo(callback){
 	});
 }
 
+/**
+* @function activeTodo(callback)
+* @description: function is to show all active tasks
+*/
 function activeTodo(callback){
 	console.log("in active model");
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
@@ -120,7 +138,10 @@ function activeTodo(callback){
 	});
 }
 
-
+/**
+* @function completeTodo(callback)
+* @description: function is to show all completed tasks
+*/
 function completeTodo(callback){
 	console.log("in complete model");
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
@@ -133,11 +154,13 @@ function completeTodo(callback){
 			}
 		});
 		callback(null,completeArray);
-		// console.log("aaaaaaaaaaaaaaaaaaaaa",completeArray)
    });
  }
 
-
+/**
+* @function clearCompTodo(callback)
+* @description: function is to rempve all completed tasks from json file
+*/
 function clearCompTodo(callback){
 	function remove(array) {
 		var x = array.filter(e => e.status != true);
@@ -149,10 +172,9 @@ function clearCompTodo(callback){
 		console.log("@@@@@@@@@@@@",todoArray)
 		var todoDeletedArray = remove(todoArray)
 		console.log("aaaaaaaaaaaaaaaaa",todoDeletedArray) 
-
-			fs.writeFile('./todo.json', JSON.stringify(todoDeletedArray), 'utf-8', function(err,data) {
-			if (err) throw err
-			console.log(" clear completed All done",todoDeletedArray);
+		fs.writeFile('./todo.json', JSON.stringify(todoDeletedArray), 'utf-8', function(err,data) {
+		if (err) throw err
+		console.log(" clear completed All done",todoDeletedArray);
 		});
 			callback(null,"success");
 	});
