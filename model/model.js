@@ -63,6 +63,7 @@ function updateStatusTodo(updateSts,callback){
 		var todoArray = JSON.parse(data);	
 		if (err) callback(err);
 		function statusChange(updateSts){
+			// in updateSts id of the element is coming
 			todoArray.forEach(function(element) {
 				if(element.id == updateSts)
 				element.status = !element.status;
@@ -180,5 +181,24 @@ function clearCompTodo(callback){
 	});
  }
 
-
-module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo,completeTodo,clearCompTodo};
+function updateInputTodo(updateTextId,updateTxt,callback){
+	console.log("in models of update texttttttttttttttttttttttttttttt",updateTextId);
+	console.log("in models of update textiddddddddddddddddddddddddddd",updateTxt);
+	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
+		var todoArray = JSON.parse(data);	
+		if (err) callback(err);
+		function idStatus(updateTxt,updateTextId){
+			todoArray.forEach(function(element) {
+				if(element.id == updateTextId)
+				element.todoapp = updateTxt.data;
+			});
+			console.log("<<<<<<<<<",todoArray);
+		}
+		idStatus(updateTxt,updateTextId)
+		fs.writeFile('./todo.json', JSON.stringify(todoArray), 'utf-8', function(err,data) {
+			if (err) throw err
+		});
+			callback(null,todoArray)
+	});//readfile
+}
+module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo,completeTodo,clearCompTodo,updateInputTodo};

@@ -149,5 +149,19 @@ var activeTodo = function(req,res) {
  }
 
 
+var updateInputTodo = function(req,res){
+	var updateTextId = req.params.id;
+	var updateTxt = req.body;
+	// console.log("jjjjjjjjjjjjjj",updateTextId)
+	modules.updateInputTodo(updateTextId,updateTxt,function(err,data){
+	console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",updateTxt)
+  if(err != null){
+		console.log(err);
+	  } else {
+		 res.send(data.todoapp);
+		 console.log(data);
+	   }
+	});
+}
 
-module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo,completeTodo,clearCompTodo};
+module.exports = {getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo,completeTodo,clearCompTodo,updateInputTodo};

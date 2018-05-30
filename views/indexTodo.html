@@ -30,14 +30,12 @@
         <% for (var i=0;i<toShowData.length ;i++) {%>
           <% if(toShowData[i].status == true) {%>
            <li class="liAllMark">
-              <input type='checkbox' class='checkBox' checked>
-              <input type='text' data-id='<%= toShowData[i].id %>' class='inputWrappText' value='<%= toShowData[i].todoapp %>'>
+              <input type='checkbox' class='checkBox' checked><input type='text' data-id='<%=toShowData[i].id %>' class='inputWrappText' value='<%=toShowData[i].todoapp %>' readonly>
               <button id='closeButn' class='close'>x</button>
            </li>
           <% } else {%>
             <li>
-              <input type='checkbox' class='checkBox'>
-              <input type='text' data-id='<%= toShowData[i].id %>' class='inputWrappText' value='<%= toShowData[i].todoapp %>'>
+              <input type='checkbox' class='checkBox'><input type='text' data-id='<%=toShowData[i].id %>' class='inputWrappText' value='<%=toShowData[i].todoapp %>'>
               <button id='closeButn' class='close'>x</button>
             </li>
           <% } %>

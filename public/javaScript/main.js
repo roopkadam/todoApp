@@ -7,7 +7,7 @@ function newElement() {
 * @function addTodo
 * @description:this function is to add elements
 */
-  var data = { data: inputValue }
+  var data = { data: inputValue.trim() }
   console.log(inputValue);
   console.log("data   ", data)
   //for displaying the li list we enter 
@@ -23,8 +23,8 @@ function newElement() {
       success: function (data) {
       console.log(JSON.stringify(data));
       console.log(li)
-      li.innerHTML = "<input type='checkbox' class='checkBox'><input type='text' data-id=" + data.id + "class='inputWrappText' value=" + data.todoapp + "> <button  id='closeButn' class='close'>x</button>";
-      document.getElementById("myUL").appendChild(li);
+      li.innerHTML = "<input type='checkbox' class='checkBox'><input type='text' data-id=" + data.id + "class='inputWrappText' value=" + JSON.stringify(data.todoapp) + "> <button  id='closeButn' class='close'>x</button>";
+       document.getElementById("myUL").appendChild(li);
       }
     });
   }
@@ -63,6 +63,7 @@ $(document).ready(function (){
       success: function () {
         $("li").addClass("liAllMark")
         $('input[type=checkbox]').prop('checked', true);
+        $(".inputWrappText").prop("readonly",true);
       }
     });
   });
@@ -81,6 +82,7 @@ $(document).ready(function (){
       success: function () {
         $("li").removeClass("liAllMark")
         $('input[type=checkbox]').prop('checked', false);
+        $(".inputWrappText").prop("readonly",false);
         return false;
       }
     });
@@ -92,11 +94,11 @@ $(document).ready(function (){
   * @description:this function is used for changing status on on checkbox
   */
   //background color when checked
+  //ajax call for changing status on on checkbox
   $('.checkBox').on('change', function (){
     var nameThis = this;
     console.log("im in change")
     var removingText = $(this).parent().find('.inputWrappText').attr("data-id");
-    //ajax call for changing status on on checkbox
     $.ajax({
       url: '/updateStatus/' + removingText,
       type: 'PUT',
@@ -105,10 +107,12 @@ $(document).ready(function (){
         if ($(nameThis).is(":checked")) {
           $(nameThis).parent().addClass("liAllMark")
           $(nameThis).prop('checked', true);
+          $(".inputWrappText").prop("readonly",true);
         }
         else {
           $(nameThis).parent().removeClass("liAllMark");
           $(nameThis).prop('checked', false);
+          $(".inputWrappText").prop("readonly",false);
         }
       }
     });
@@ -167,10 +171,10 @@ $(document).ready(function (){
       contentType: 'application/json',
       success:function(active){
         console.log(JSON.stringify(active));
-        console.log("activeeeeeeeeeeeeeeeee",active)
+        console.log("active",active)
         for (var i=0;i<active.length ;i++){
-          $(".completedDiv").append("<li><input type='checkbox' class='checkBox'><input type='text' data-id="+active[i].id+"class='inputWrappText' value="+active[i].todoapp+"> <button id='closeButn' class='close'>x</button></li>")
-        }    
+          $(".completedDiv").append("<li><input type='checkbox' class='checkBox'><input type='text' data-id="+active[i].id+"class='inputWrappText' value="+active[i].todoapp+" readonly> <button id='closeButn' class='close'>x</button></li>")
+        } 
           $('.completedDiv').removeClass('disp');
           $('.inputDiv').addClass('disp');
           $('.activeDiv').addClass('disp');
@@ -191,11 +195,29 @@ $(document).ready(function (){
       contentType: 'application/json',
       success: function () {
         debugger;
-        console.log("clear completed Sucessssssssssssssssssssss")
+        console.log("clear completed Success")
         $(".liAllMark").remove()
        }
       });
     });
+
+  //updating text on keypress of enter
+    $(".inputWrappText").keydown(function(e){
+      var key = e.which;
+      var values = $(this).parent().find('.inputWrappText').val();
+      // console.log("::::::::::::::::::",values)
+      var removingText = $(this).parent().find('.inputWrappText').attr("data-id");
+      if(key == 13) {
+        $.ajax({
+        url: '/updateTextInput/' + removingText,
+        type: 'PUT',
+        data: JSON.stringify({data:values}),
+        contentType: 'application/json',
+        success: function () {
+          console.log("sucess of updating text")
+        }
+      });
+      }
+      
+  });
 });
-
-
