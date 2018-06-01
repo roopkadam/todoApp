@@ -2,6 +2,23 @@ const express = require('express');
 const parser = require('body-parser');
 const routes = require('./routes/routesTodo');
 
+/**
+@description path for switching on environment (development/testing)
+*/
+switch(process.env.NODE_ENV) {
+case 'development':
+directoryName = './apptodo.json';
+break;
+case 'testing':
+directoryName = './apptodoTest.json';
+break;
+
+default:
+console.log("Please provide proper environment");
+}
+
+
+
 var app = express();
 // var fs = require('fs');
 app.set('view engine', 'html');

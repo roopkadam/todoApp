@@ -4,20 +4,20 @@ var expect = require('expect');
 var {app} = require('../serverTodo.js');
 
 
-// describe('ADD TASKS',() => {
-// 	//if input is right
-// 	it('With valid input',(done) => {
-// 		var data ="demo";
-//     request(app)
-// 	    .post('/taskadd')
-// 	    .send({data})
-// 	    .expect(200)
-// 	    .expect((res) => {
-// 	    expect(res.body.todoapp).toBe(data);
-// 	    })
-// 	    .end(done);
-//   });
-//   //if input is empty
+describe('ADD TASKS',() => {
+	//if input is right
+	// it('With valid input',(done) => {
+	// 	var data ="demo";
+ //    request(app)
+	//     .post('/taskadd')
+	//     .send({data})
+	//     .expect(200)
+	//     .expect((res) => {
+	//     expect(res.body.todoapp).toBe(data);
+	//     })
+	//     .end(done);
+ //  });
+  //if input is empty
 // 	it('With empty input',(done) => {
 // 		var data ="";
 //     request(app)

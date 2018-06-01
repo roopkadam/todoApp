@@ -5,40 +5,37 @@ var modules = require('./../model/model');
 */
 
 var getTodo = function(req,res){
-		modules.getTodo(function(err,data){
-			if(err!=null){
-				console.log(err);
-			}else{
-				res.render('indexTodo.html',{
-				pageTitle: 'My To do List',
-				toShowData : data
-			  });
-			}
-	 });
-	}
+	modules.getTodo().then(
+	function(data){
+		res.render('indexTodo.html',{
+			pageTitle: 'My To do List',
+			toShowData : data
+		});
+	}).catch(
+	function(err){
+		if(err)throw(err)
+	});
+}
 
 /**
 * @function addTodo (req,res)
 * @description: function is usede to adding data to json file
 */
-	var addTodo =function (req,res){
-		var task = req.body.data;
-		// console.log("taskkkkkkkkkk",task);
-		if(task.trim() ==""){
-			res.status(400).send({error:"Warning: Please enter valid input value"})
-			console.log("you should enter something");
-		}else{
+var addTodo =function (req,res){
+	var task = req.body.data;
+	if(task.trim() ==""){
+		res.status(400).send({error:"Warning: Please enter valid input value"})
+		console.log("you should enter something");
+	}else{
 		modules.addTodo(task).then(
-			// console.log("taskkkkkkkkkk",task)
-			function(data){
-				// console.log("promiseeeee",data)
-				res.send(data);
-			}).catch(
-				function(err){
-				if(err)throw (err)
-				});	
-	  	}
-    }
+		function(data){
+			res.send(data);
+		}).catch(
+		function(err){
+			if(err)throw (err)
+		});	
+	}
+}
 
 /**
 * @function deleteTodo (req,res)
@@ -65,9 +62,7 @@ var deleteTodo = function(req,res){
 */
 var updateStatusTodo = function(req,res){
 	var updateSts = req.params.id
-		// console.log("pppppppppppppppppp",updateSts)
 	modules.updateStatusTodo(updateSts).then(
-
 		function(data){
 			res.send(data);
 		}).catch(
@@ -115,7 +110,6 @@ var unmarkAllTodo = function(req,res){
 var activeTodo = function(req,res) {
 	console.log("in active controller")
 		var task = req.body.data;
-
 			modules.activeTodo().then(
 				function(data){
 					res.send(data);
@@ -129,42 +123,44 @@ var activeTodo = function(req,res) {
 * @function completeTodo (req,res)
 * @description: function is to show the completed task
 */
-	var completeTodo =function(req,res){
-		modules.completeTodo().then(
-			function(data){
-				res.send(data);
-			}).catch(
-			function(err){
-				if(err)throw(err)
-			});	
- }
+var completeTodo =function(req,res){
+	modules.completeTodo().then(
+	function(data){
+		res.send(data);
+	}).catch(
+	function(err){
+		if(err)throw(err)
+	});	
+}
 
 /**
 * @function completeTodo (req,res)
 * @description: function is to remove all the completed task
 */
- var clearCompTodo = function(req,res){
- 	modules.clearCompTodo().then(
- 		function(data){
- 			console.log("ccccccccccccccccc",data)
- 			res.send(data);
- 		}).catch(
- 		function(err){
- 			if(err)throw(err)
- 		});
- }
+var clearCompTodo = function(req,res){
+	modules.clearCompTodo().then(
+	function(data){
+		console.log(data)
+		res.send(data);
+	}).catch(
+	function(err){
+		if(err)throw(err)
+	});
+}
 
-
+/**
+* @function updateInputTodo (req,res)
+* @description: function is to update all the input text when input is edited from keyboard task
+*/
 var updateInputTodo = function(req,res){
 	var updateTextId = req.params.id;
 	var updateTxt = req.body;
 	modules.updateInputTodo(updateTextId,updateTxt).then(
-		function(data){
-			// console.log("DDDDDDDDDDDDDDDDDDDDD",data)
-			res.send(data.todoapp);
-		}).catch(
-		function(err){
-			if(err)throw(err)
+	function(data){
+		res.send(data.todoapp);
+	}).catch(
+	function(err){
+		if(err)throw(err)
 	});
 }
 
