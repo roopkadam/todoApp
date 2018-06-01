@@ -14,7 +14,10 @@ function getTodo (callBack){
 * @function addTodo (task,callBack)
 * @description: function is for adding data in json file
 */
-function addTodo(task,callBack) {
+
+function addTodo(task) {
+	return new Promise(function(resolve,reject){
+	console.log("in add todo model")
 	var generateId=  Math.floor(Math.random() * 26) + Date.now();
 	var objectArray = require('../todo.json');
 	var tempArry = {
@@ -24,9 +27,10 @@ function addTodo(task,callBack) {
 	}
 	objectArray.push(tempArry);
 	fs.writeFile(path.join(__dirname,'../todo.json'), JSON.stringify(objectArray), 'utf-8', function(err,data) {	
-		if (err) callBack(err);
-		console.log("from model----------------------------------",objectArray);
-		callBack(null,tempArry);
+		if (err) throw(err);
+		console.log(objectArray);
+		resolve(tempArry);
+		});
 	});
 }
 
@@ -34,34 +38,37 @@ function addTodo(task,callBack) {
 * @function deleteTodo(taskDelete,callback)
 * @description: function is for deleting data from json file
 */
-function deleteTodo(taskDelete,callback){
+function deleteTodo(taskDelete){
+	return new Promise(function(resolve,reject){
 	function remove(array, element) {
-		console.log("~~~~~~~~~~~~~~~~~~~~~~~~~",element);
+		// console.log(element);
 		var x = array.filter(e => e.id != element);
 		return x;
 	}
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
-		console.log("@@@@@@@@@@@@",todoArray)
-		if (err) callback(err);
+		console.log(todoArray)
+		if (err) throw(err);
 		var todoDeletedArray = remove(todoArray,taskDelete)
 		fs.writeFile('./todo.json', JSON.stringify(todoDeletedArray), 'utf-8', function(err,data) {
 			if (err) throw err
 			console.log("done",todoDeletedArray);
 		})
-		callback(null,"success");
+		resolve(todoDeletedArray);
 	});
+});
 }
 
 /**
 * @function updateStatusTodo(updateSts,callback)
 * @description: function is for updating status on click of check button in json file 
 */
-function updateStatusTodo(updateSts,callback){
+function updateStatusTodo(updateSts){
+	return new Promise(function(resolve,reject){
 	console.log("in model", updateSts);
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
-		if (err) callback(err);
+		if (err) throw(err);
 		function statusChange(updateSts){
 			// in updateSts id of the element is coming
 			todoArray.forEach(function(element) {
@@ -70,52 +77,56 @@ function updateStatusTodo(updateSts,callback){
 			});
 			console.log(todoArray);
 		}
-			console.log("data::::::::::::::::::::::::::::::::::",todoArray);
-
 		statusChange(updateSts)
 		fs.writeFile('./todo.json', JSON.stringify(todoArray), 'utf-8', function(err,data) {
 			if (err) throw err
 		});
-			callback(null,"success")
+			resolve(todoArray)
 	});//readfile
+	});
 }
 
 /**
 * @function markAllTodo(callback)
 * @description: function is to check all the elements
 */
-function markAllTodo(callback) {
-	console.log("------------------------")
+function markAllTodo() {
+	return new Promise(function(resolve,request){
 		fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
-		if (err) callback(err);
+		if (err)throw(err);
 			todoArray.forEach(function(element) {
 				element.status = true;
 		});
 			fs.writeFile('./todo.json', JSON.stringify(todoArray), 'utf-8', function(err,data) {
-			if (err) throw err
+			if(err)throw err
 			console.log("done",todoArray);
 		});
-     callback(null,"success")
-});
+     resolve(todoArray)
+		});
+	});
 }
 
 /**
 * @function unmarkAllTodo(callback)
 * @description: function is to uncheck all the elements
 */
-function unmarkAllTodo(callback){
+function unmarkAllTodo(){
+	console.log("in unmark all model" )
+	return new Promise(function(resolve,request){
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
-		if (err) callback(err);
+		console.log("tititittiitttiitti",todoArray)
+		if (err) throw(err);
 		todoArray.forEach(function(element){
 			element.status = false;
 		});	
 		fs.writeFile('./todo.json', JSON.stringify(todoArray), 'utf-8', function(err,data) {
 			if (err) throw err
 			console.log("unmark All done",todoArray);
+				resolve(todoArray)
 		});
-			callback(null,"success")
+	 	});
 	});
 }
 
@@ -123,19 +134,21 @@ function unmarkAllTodo(callback){
 * @function activeTodo(callback)
 * @description: function is to show all active tasks
 */
-function activeTodo(callback){
+function activeTodo(){
 	console.log("in active model");
+	return new Promise(function(resolve,request){
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
-		console.log("**********************",todoArray)
-		if (err) callback(err);
+		console.log(todoArray)
+		if (err) throw(err);
 		var activeArray = todoArray.filter(function(element){
-			console.log("&&&&&&&&&&&&&&&&&&&",element)
+			console.log(element)
 			if(element.status != true){
 			return element;
 			}
 		});	
-		callback(null,activeArray)
+		 resolve(activeArray)
+	 });
 	});
 }
 
@@ -143,62 +156,67 @@ function activeTodo(callback){
 * @function completeTodo(callback)
 * @description: function is to show all completed tasks
 */
-function completeTodo(callback){
+function completeTodo(){
 	console.log("in complete model");
+	return new Promise(function(resolve,request){
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
-		console.log("1111111111111111111111",todoArray)
-		if (err) callback(err);
+		console.log(todoArray)
+		if (err) throw(err);
 		var completeArray = todoArray.filter(function(element){
 			if(element.status !=false){
 				return element;
 			}
 		});
-		callback(null,completeArray);
+		resolve(completeArray);
    });
+	});
  }
 
 /**
 * @function clearCompTodo(callback)
 * @description: function is to rempve all completed tasks from json file
 */
-function clearCompTodo(callback){
+function clearCompTodo(){
+	return new Promise(function(resolve,request){
 	function remove(array) {
 		var x = array.filter(e => e.status != true);
 		return x;
 	}
 		fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
-		if (err) callback(err);
-		console.log("@@@@@@@@@@@@",todoArray)
+		if (err)throw(err);
+		console.log("todo arrayyyyyyyyy",todoArray)
 		var todoDeletedArray = remove(todoArray)
-		console.log("aaaaaaaaaaaaaaaaa",todoDeletedArray) 
+		console.log("todo dalete arrayyyyyyyyy",todoDeletedArray) 
 		fs.writeFile('./todo.json', JSON.stringify(todoDeletedArray), 'utf-8', function(err,data) {
 		if (err) throw err
 		console.log(" clear completed All done",todoDeletedArray);
 		});
-			callback(null,"success");
+			resolve(todoDeletedArray);
+	  });
 	});
  }
 
-function updateInputTodo(updateTextId,updateTxt,callback){
-	console.log("in models of update texttttttttttttttttttttttttttttt",updateTextId);
-	console.log("in models of update textiddddddddddddddddddddddddddd",updateTxt);
+
+function updateInputTodo(updateTextId,updateTxt){
+	return new Promise(function(resolve,request){
 	fs.readFile(path.join(__dirname, '../todo.json'),'utf-8',function(err,data){
 		var todoArray = JSON.parse(data);	
-		if (err) callback(err);
+		if (err)throw(err);
 		function idStatus(updateTxt,updateTextId){
 			todoArray.forEach(function(element) {
 				if(element.id == updateTextId)
 				element.todoapp = updateTxt.data;
 			});
-			console.log("<<<<<<<<<",todoArray);
+			console.log(todoArray);
 		}
 		idStatus(updateTxt,updateTextId)
 		fs.writeFile('./todo.json', JSON.stringify(todoArray), 'utf-8', function(err,data) {
 			if (err) throw err
 		});
-			callback(null,todoArray)
-	});//readfile
+			resolve(todoArray)
+	 });
+	})
 }
 module.exports ={getTodo,addTodo,deleteTodo,updateStatusTodo,markAllTodo,unmarkAllTodo,activeTodo,completeTodo,clearCompTodo,updateInputTodo};

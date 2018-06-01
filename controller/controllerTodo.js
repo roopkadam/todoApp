@@ -21,16 +21,19 @@ var getTodo = function(req,res){
 * @function addTodo (req,res)
 * @description: function is usede to adding data to json file
 */
-var addTodo =function (req,res){
-	var task = req.body.data;
-	modules.addTodo(task,function(err,data){
-		if(err!=null){
-    		console.log(err);
-		}else{
-			res.send(data);
-  	}
-  });
-}
+	var addTodo =function (req,res){
+		var task = req.body.data;
+		// console.log("taskkkkkkkkkk",task)
+		modules.addTodo(task).then(
+			function(data){
+				// console.log("promiseeeee",data)
+				res.send(data);
+			}).catch(
+				function(err){
+				if(err)throw (err)
+				});	
+	  	}
+
 
 /**
 * @function deleteTodo (req,res)
@@ -39,15 +42,17 @@ var addTodo =function (req,res){
 var deleteTodo = function(req,res){
 	console.log("controllerrr")
   var taskDelete = req.params.id
-  console.log(taskDelete)
-	modules.deleteTodo(taskDelete,function(err,data){
-		if(err!=null){
-			console.log(err);
-		}else{
+  console.log("taskDeleteeeeeee",taskDelete)
+	modules.deleteTodo(taskDelete).then(
+		function(data){
+			console.log("datattatata",data)
 			res.send(data);
-		}
-	});
-}
+		}).catch(
+		function(err){
+			if(err)throw(err)
+		});
+	}
+
 
 /**
 * @function updateStatusTodo (req,res)
@@ -55,13 +60,15 @@ var deleteTodo = function(req,res){
 */
 var updateStatusTodo = function(req,res){
 	var updateSts = req.params.id
-	modules.updateStatusTodo(updateSts,function(err,data){
-		if(err!=null){
-			console.log(err);
-		}else{
+		// console.log("pppppppppppppppppp",updateSts)
+	modules.updateStatusTodo(updateSts).then(
+
+		function(data){
 			res.send(data);
-		}
-	});
+		}).catch(
+		function(err){
+			if(err)throw(err)
+		});
 }
 
 /**
@@ -70,15 +77,15 @@ var updateStatusTodo = function(req,res){
 */
 var markAllTodo = function(req,res) {
 	console.log("in markAll function")
-	modules.markAllTodo(function(err,data){
-		if(err !=null){
-			console.log(err);
-		}else{
-			console.log(data);
+	modules.markAllTodo().then(
+		function(data){
 			res.send(data);
-		}
-	});
-}
+		}).catch(
+		function(err){
+			if(err)throw(err)
+		});
+	}
+
 
 /**
 * @function unmarkAllTodo (req,res)
@@ -86,16 +93,15 @@ var markAllTodo = function(req,res) {
 */
 var unmarkAllTodo = function(req,res){
 	console.log("in unmarkall controller")
-	modules.unmarkAllTodo(function(err,data){
-		if(err != null){
-			console.log(err);
-		} else {
-			console.log(data);
-
+	modules.unmarkAllTodo().then(
+		function(data){
 			res.send(data);
-		}
-	});
-}
+		}).catch(
+		function(err){
+			if(err)throw(err)
+		});
+	}
+
 
 /**
 * @function unmarkAllTodo (req,res)
@@ -104,15 +110,13 @@ var unmarkAllTodo = function(req,res){
 var activeTodo = function(req,res) {
 	console.log("in active controller")
 		var task = req.body.data;
-			modules.activeTodo(function(err,data){
-      console.log("in active controller")
-      if(err != null){
-			 console.log(err);
-		  } else {
-			 console.log(data);
-			 res.send(data);
-			 console.log("active arrayyyyyyyyyyyy",data)
-		  }
+
+			modules.activeTodo().then(
+				function(data){
+					res.send(data);
+				}).catch(
+				function (err){
+					if(err)throw(err)
 		});
 	}
 
@@ -121,15 +125,13 @@ var activeTodo = function(req,res) {
 * @description: function is to show the completed task
 */
 	var completeTodo =function(req,res){
-		modules.completeTodo(function(err,data){
-		console.log("in complete controller");	
-		  if(err != null){
-			console.log(err);
-		  } else {
-			 console.log(data);
-			 res.send(data);
-		  }
-	 });
+		modules.completeTodo().then(
+			function(data){
+				res.send(data);
+			}).catch(
+			function(err){
+				if(err)throw(err)
+			});	
  }
 
 /**
@@ -137,30 +139,27 @@ var activeTodo = function(req,res) {
 * @description: function is to remove all the completed task
 */
  var clearCompTodo = function(req,res){
- 	modules.clearCompTodo(function(err,data){
- 	console.log("in clear complete controller");
-		if(err != null){
-		console.log(err);
-	  } else {
-		 res.send(data);
-		 console.log("?????????????????",data);
-	   }
-	 });
+ 	modules.clearCompTodo().then(
+ 		function(data){
+ 			console.log("ccccccccccccccccc",data)
+ 			res.send(data);
+ 		}).catch(
+ 		function(err){
+ 			if(err)throw(err)
+ 		});
  }
 
 
 var updateInputTodo = function(req,res){
 	var updateTextId = req.params.id;
 	var updateTxt = req.body;
-	// console.log("jjjjjjjjjjjjjj",updateTextId)
-	modules.updateInputTodo(updateTextId,updateTxt,function(err,data){
-	console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",updateTxt)
-  if(err != null){
-		console.log(err);
-	  } else {
-		 res.send(data.todoapp);
-		 console.log(data);
-	   }
+	modules.updateInputTodo(updateTextId,updateTxt).then(
+		function(data){
+			// console.log("DDDDDDDDDDDDDDDDDDDDD",data)
+			res.send(data.todoapp);
+		}).catch(
+		function(err){
+			if(err)throw(err)
 	});
 }
 

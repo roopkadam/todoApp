@@ -149,9 +149,9 @@ $(document).ready(function (){
         for (var i=0;i<active.length ;i++){
           $(".activeDiv").append("<li><input type='checkbox' class='checkBox'><input type='text' data-id="+active[i].id+"class='inputWrappText' value="+active[i].todoapp+"> <button id='closeButn' class='close'>x</button></li>")
         }
-        $('.activeDiv').removeClass('disp');
-        $('.inputDiv').addClass('disp');
-        $('.completedDiv').addClass('disp');
+          $('.activeDiv').removeClass('disp');
+          $('.inputDiv').addClass('disp');
+          $('.completedDiv').addClass('disp');
       }
     });
   });
@@ -194,18 +194,17 @@ $(document).ready(function (){
       type: 'delete',
       contentType: 'application/json',
       success: function () {
-        debugger;
         console.log("clear completed Success")
         $(".liAllMark").remove()
        }
       });
     });
+  
 
   //updating text on keypress of enter
     $(".inputWrappText").keydown(function(e){
       var key = e.which;
       var values = $(this).parent().find('.inputWrappText').val();
-      // console.log("::::::::::::::::::",values)
       var removingText = $(this).parent().find('.inputWrappText').attr("data-id");
       if(key == 13) {
         $.ajax({

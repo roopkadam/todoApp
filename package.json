@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha **/test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
     "ejs": "^2.5.9",
+    "expect": "^1.20.2",
     "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "express-validator": "^5.2.0",
+    "mocha": "^3.0.0",
+    "supertest": "^3.1.0"
   }
 }
