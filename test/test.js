@@ -17,7 +17,24 @@ var {app} = require('../serverTodo.js');
 // 	    })
 // 	    .end(done);
 //   });
+//   //if input is empty
+// 	it('With empty input',(done) => {
+// 		var data ="";
+//     request(app)
+// 	    .post('/taskadd')
+// 	    .send({data})
+// 	    .expect(200)
+// 	    .expect((res) => {
+// 	    	console.log("HUHJH",res.body)
+// 	    	var tmp=res.body.todoapp
+// 	    	console.log("rrrrrrrrrrrrrrr",tmp)
+// 	    expect(res.body.todoapp).toBe();
+// 	    })
+// 	    .end(done);
+//   });
 // });
+
+
 
 // describe('DELETE TASKS',() => {
 // 	//if input is right

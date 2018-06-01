@@ -23,8 +23,13 @@ var getTodo = function(req,res){
 */
 	var addTodo =function (req,res){
 		var task = req.body.data;
-		// console.log("taskkkkkkkkkk",task)
+		// console.log("taskkkkkkkkkk",task);
+		if(task.trim() ==""){
+			res.status(400).send({error:"Warning: Please enter valid input value"})
+			console.log("you should enter something");
+		}else{
 		modules.addTodo(task).then(
+			// console.log("taskkkkkkkkkk",task)
 			function(data){
 				// console.log("promiseeeee",data)
 				res.send(data);
@@ -33,7 +38,7 @@ var getTodo = function(req,res){
 				if(err)throw (err)
 				});	
 	  	}
-
+    }
 
 /**
 * @function deleteTodo (req,res)

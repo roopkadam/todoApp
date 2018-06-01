@@ -26,6 +26,9 @@ function newElement() {
       li.innerHTML = "<input type='checkbox' class='checkBox'><input type='text' data-id=" + data.id + "class='inputWrappText' value=" + JSON.stringify(data.todoapp) + "> <button  id='closeButn' class='close'>x</button>";
        document.getElementById("myUL").appendChild(li);
       }
+      error: function(err) {
+        $("#warning").text(JSON.parse(err.responseText).error); 
+      }
     });
   }
   document.getElementById("myInput").value = "";
@@ -199,7 +202,7 @@ $(document).ready(function (){
        }
       });
     });
-  
+
 
   //updating text on keypress of enter
     $(".inputWrappText").keydown(function(e){
