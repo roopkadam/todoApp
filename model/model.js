@@ -89,7 +89,29 @@ function deleteTodo(taskDelete){
 * @function updateStatusTodo(updateSts,callback)
 * @description: function is for updating status on click of check button in json file 
 */
-function updateStatusTodo(updateSts){
+function updateStatusTodo(updateSts,updateText){
+	// console.log("statusssssssssssss",updateSts)
+	// console.log("statusssssssssssss",updateText)
+	return new Promise(function(resolve,reject){
+	mongoDb().then(function(err,success){
+		db.collection('table',function(err,collection){
+			if(err)throw(err)
+			console.log(err)	
+		collection.updateMany( {id:updateSts},function(err,success){
+			if(err)throw(err)
+				resolve("success");
+		  });
+		});
+	}).catch(function(err){
+			if(err)throw(err)
+			console.log(err)
+	});
+ });
+}
+
+function updateStatusTodo(updateSts,updateText){
+	console.log("statusssssssssssss",updateSts)
+	console.log("texttttttttttss",updateText)
 	return new Promise(function(resolve,reject){
 		console.log("in model", updateSts);
 		fs.readFile(directoryName,'utf-8',function(err,data){

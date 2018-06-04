@@ -62,7 +62,9 @@ var deleteTodo = function(req,res){
 */
 var updateStatusTodo = function(req,res){
 	var updateSts = req.params.id
-	modules.updateStatusTodo(updateSts).then(
+	var updateText = req.body;
+	console.log("update Textttttttt",updateText)
+	modules.updateStatusTodo(updateSts,updateText).then(
 		function(data){
 			res.send(data);
 		}).catch(
@@ -70,6 +72,7 @@ var updateStatusTodo = function(req,res){
 			if(err)throw(err)
 		});
 }
+
 
 /**
 * @function markAllTodo (req,res)

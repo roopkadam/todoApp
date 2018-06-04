@@ -103,9 +103,12 @@ $(document).ready(function (){
     var nameThis = this;
     console.log("im in change")
     var removingText = $(this).parent().find('.inputWrappText').attr("data-id");
+    var isChecked = $(this).is(':checked');
+    console.log("asasasasasass",isChecked)
     $.ajax({
-      url: '/updateStatus/' + removingText,
+      url: '/updateStatus/' + removingText ,
       type: 'PUT',
+      data: JSON.stringify({data:isChecked}),
       contentType: 'application/json',
       success: function () {
         if ($(nameThis).is(":checked")) {
