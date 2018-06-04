@@ -140,7 +140,6 @@ var completeTodo =function(req,res){
 var clearCompTodo = function(req,res){
 	modules.clearCompTodo().then(
 	function(data){
-		console.log(data)
 		res.send(data);
 	}).catch(
 	function(err){

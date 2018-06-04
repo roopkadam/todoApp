@@ -1,13 +1,35 @@
-const fs = require('fs');
-var path = require("path");
-// get todo function callback
+/**
+* @description: mpngodb
+*/
+function mongoDb(){
+		return new Promise(function(resolve,reject){
+		var MongoClient = require('mongodb').MongoClient;
+		var url = 'mongodb://localhost:27017/todoApp';
+		// Use connect method to connect to the server
+		MongoClient.connect(url,{ useNewUrlParser: true }, function (err, client) {
+			if(err) throw err;
+			//success
+			db = client.db('todoApp');
+			console.log("Connected successfully to server");
+			resolve(db);
+		});
+	})
+}
+
+
+// get todo function when we load the app
 function getTodo (){
 	return new Promise(function(resolve,reject){
-		fs.readFile(directoryName, 'utf8', function (err, data) {
-		var parseData = JSON.parse(data)
-		if (err) throw(err);
-		console.log(data);
-		resolve(parseData);
+		mongoDb().then(function(err,success){
+			db.collection('table',function(err,collection){
+				collection.find().toArray(function(err,documents){
+					console.log("documents",documents);
+					resolve(documents);
+				})
+			});		
+		}).catch(function(err){
+		if(err)throw(err);
+		console.log(err);
 		});
 	});
 }
@@ -19,22 +41,24 @@ function getTodo (){
 
 function addTodo(task) {
 	return new Promise(function(resolve,reject){
-		console.log("in add todo model")
 		var generateId=  Math.floor(Math.random() * 26) + Date.now();
-		var objectArray;
-		fs.readFile(directoryName,'utf-8',function(err,data){
-			var todoArray = JSON.parse(data);	
-			console.log("mmmmmmm",todoArray)
-			var tempArry = {
-				todoapp: task,
-				id: generateId,
-				status:false
-			}
-			todoArray .push(tempArry);
-			write(todoArray);
-			resolve(tempArry)
+		mongoDb().then(function(err,success){
+			db.collection('table',function(err,collection){
+				var tempArry = {
+					todoapp:task,
+					id: generateId,
+					status:false
+				}
+				collection.insert({todoapp:task,id:generateId,status:false},function(err,result){
+					if(err)throw(err)
+					resolve(tempArry);
+			  });
+		  });
+		}).catch(function(err){
+			if(err)throw(err);
+			console.log(err);		
 		});
-	});
+  });
 }
 
 /**
@@ -43,20 +67,23 @@ function addTodo(task) {
 */
 function deleteTodo(taskDelete){
 	return new Promise(function(resolve,reject){
-		function remove(array, element) {
-			var x = array.filter(e => e.id != element);
-			return x;
-		}
-		fs.readFile(directoryName,'utf-8',function(err,data){
-			var todoArray = JSON.parse(data);	
-			console.log(todoArray)
-			if (err) throw(err);
-			var todoDeletedArray = remove(todoArray,taskDelete)
-			write(todoDeletedArray);
-			resolve(todoDeletedArray);
-		});
+		var idValue  = parseFloat(taskDelete);
+		mongoDb().then(function(err,success){
+			db.collection('table',function(err,collection){
+				if(err)throw(err)
+				console.log(err)
+		 		collection.deleteOne({id:idValue},function(err,success){
+					if(err)throw(err)
+					resolve("success");
+				});
+			});
+		}).catch(function(err){
+				if(err)throw(err);
+				console.log(err);
+			});
 	});
 }
+
 
 /**
 * @function updateStatusTodo(updateSts,callback)
@@ -88,15 +115,19 @@ function updateStatusTodo(updateSts){
 * @description: function is to check all the elements
 */
 function markAllTodo() {
-	return new Promise(function(resolve,request){
-		fs.readFile(directoryName,'utf-8',function(err,data){
-			var todoArray = JSON.parse(data);	
-			if (err)throw(err);
-			todoArray.forEach(function(element) {
-				element.status = true;
+	return new Promise(function(resolve,reject){
+		mongoDb().then(function(err,success){
+			db.collection('table',function(err,collection){
+				if(err)throw(err)
+				console.log(err)
+				collection.updateMany({},{ $set: { status: true } } ,function(err,success){
+					if(err)throw(err)
+					resolve("success")
+				});		
 			});
-			write(todoArray)
-			resolve(todoArray)
+		}).catch(function(err){
+			if(err)throw(err)
+			console.log(err)
 		});
 	});
 }
@@ -106,17 +137,19 @@ function markAllTodo() {
 * @description: function is to uncheck all the elements
 */
 function unmarkAllTodo(){
-	console.log("in unmark all model" )
-	return new Promise(function(resolve,request){
-		fs.readFile(directoryName,'utf-8',function(err,data){
-			var todoArray = JSON.parse(data);	
-			console.log(todoArray)
-			if (err) throw(err);
-			todoArray.forEach(function(element){
-				element.status = false;
-			});	
-			write(todoArray)
-			resolve(todoArray)
+	return new Promise(function(resolve,reject){
+		mongoDb().then(function(err,success){
+			db.collection('table',function(err,collection){
+				if(err)throw(err)
+				console.log(err)
+			collection.updateMany({},{ $set : { status: false } },function(err,success){
+				if(err)throw(err)
+				resolve("success")
+		  	});
+			});
+		}).catch(function(err){
+			if(err)throw(err)
+			console.log(err)
 		});
 	});
 }
@@ -126,19 +159,20 @@ function unmarkAllTodo(){
 * @description: function is to show all active tasks
 */
 function activeTodo(){
-	console.log("in active model");
-	return new Promise(function(resolve,request){
-		fs.readFile(directoryName,'utf-8',function(err,data){
-			var todoArray = JSON.parse(data);	
-			console.log(todoArray)
-			if (err) throw(err);
-			var activeArray = todoArray.filter(function(element){
-				console.log(element)
-				if(element.status != true){
-					return element;
-				}
-			});	
-			resolve(activeArray)
+	return new Promise(function(resolve,reject){
+		mongoDb().then(function(err,success){
+			db.collection('table',function(err,collection){
+				if(err)throw(err)
+				console.log(err)
+				collection.find({ status : false }).toArray(function(err,success){
+					if(err)throw(err)
+					console.log(err)
+					resolve(success)
+				});
+			});
+		}).catch(function(err){
+			if(err)throw(err)
+			console.log(err)
 		});
 	});
 }
@@ -148,18 +182,20 @@ function activeTodo(){
 * @description: function is to show all completed tasks
 */
 function completeTodo(){
-	console.log("in complete model");
-	return new Promise(function(resolve,request){
-		fs.readFile(directoryName,'utf-8',function(err,data){
-			var todoArray = JSON.parse(data);	
-			console.log(todoArray)
-			if (err) throw(err);
-			var completeArray = todoArray.filter(function(element){
-				if(element.status !=false){
-					return element;
-				}
+	return new Promise(function(resolve,reject){
+		mongoDb().then(function(err,success){
+			db.collection('table',function(err,collection){
+				if(err)throw(err)
+				console.log(err)
+				collection.find({ status : true}).toArray(function(err,success){
+					if(err)throw(err)
+					console.log(err)
+				resolve(success)
+				});
 			});
-			resolve(completeArray);
+		}).catch(function(err){
+			if(err)throw(err)
+			console.log(err)
 		});
 	});
 }
@@ -169,24 +205,28 @@ function completeTodo(){
 * @description: function is to rempve all completed tasks from json file
 */
 function clearCompTodo(){
-	return new Promise(function(resolve,request){
-		function remove(array) {
-			var x = array.filter(e => e.status != true);
-			return x;
-		}
-		fs.readFile(directoryName,'utf-8',function(err,data){
-			var todoArray = JSON.parse(data);	
-			if (err)throw(err);
-			console.log(todoArray)
-			var todoDeletedArray = remove(todoArray)
-			console.log(todoDeletedArray) 
-			write(todoDeletedArray)
-			resolve(todoDeletedArray);
+	return new Promise(function(resolve,reject){
+		mongoDb().then(function(err,success){
+			db.collection('table',function(err,collection){
+				if(err)throw(err)
+				console.log(err)
+			 collection.remove( { status : true }, function(err,success){
+				if(err)throw(err)
+				console.log(err)
+			  resolve(success)
+			 });
+			});
+		}).catch(function(err){
+			if(err)throw(err)
+			console.log(err)
 		});
 	});
 }
 
-
+/**
+* @function updateInputTodo(updateTextId,updateTxt)
+* @description: function is update text when edited from client side
+*/
 function updateInputTodo(updateTextId,updateTxt){
 	return new Promise(function(resolve,request){
 	fs.readFile(directoryName,'utf-8',function(err,data){

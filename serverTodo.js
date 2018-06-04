@@ -3,6 +3,12 @@ const parser = require('body-parser');
 const routes = require('./routes/routesTodo');
 
 /**
+@description for using mongodb
+*/
+
+
+
+/**
 @description path for switching on environment (development/testing)
 */
 switch(process.env.NODE_ENV) {
