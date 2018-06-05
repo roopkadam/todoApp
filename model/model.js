@@ -1,35 +1,21 @@
 /**
-* @description: mpngodb
+* @description: mongodb
 */
-function mongoDb(){
-		return new Promise(function(resolve,reject){
-		var MongoClient = require('mongodb').MongoClient;
-		var url = 'mongodb://localhost:27017/todoApp';
-		// Use connect method to connect to the server
-		MongoClient.connect(url,{ useNewUrlParser: true }, function (err, client) {
-			if(err) throw err;
-			//success
-			db = client.db('todoApp');
-			console.log("Connected successfully to server");
-			resolve(db);
-		});
-	})
-}
+const {schemas} = require('../schema/schemaTodo');
 
 
 // get todo function when we load the app
 function getTodo (){
 	return new Promise(function(resolve,reject){
-		mongoDb().then(function(err,success){
-			db.collection('table',function(err,collection){
-				collection.find().toArray(function(err,documents){
-					console.log("documents",documents);
-					resolve(documents);
-				})
-			});		
-		}).catch(function(err){
-		if(err)throw(err);
-		console.log(err);
+		schemas.find({})
+			.exec(function (err, success) {
+				if (err) {
+					reject('error occured')
+				} 
+				else {
+					console.log(success);
+					resolve(success); 
+				}
 		});
 	});
 }
@@ -40,25 +26,16 @@ function getTodo (){
 */
 
 function addTodo(task) {
+	console.log("task",task)
 	return new Promise(function(resolve,reject){
 		var generateId=  Math.floor(Math.random() * 26) + Date.now();
-		mongoDb().then(function(err,success){
-			db.collection('table',function(err,collection){
-				var tempArry = {
-					todoapp:task,
-					id: generateId,
-					status:false
-				}
-				collection.insert({todoapp:task,id:generateId,status:false},function(err,result){
-					if(err)throw(err)
-					resolve(tempArry);
-			  });
-		  });
-		}).catch(function(err){
-			if(err)throw(err);
-			console.log(err);		
+		var add = new schemas({ todoapp: task,id : generateId, status :false});
+		add.save(function (err,success) {
+			if (err) throw(err);
+			resolve(success)
+			// saved!
 		});
-  });
+	});
 }
 
 /**
@@ -68,20 +45,10 @@ function addTodo(task) {
 function deleteTodo(taskDelete){
 	return new Promise(function(resolve,reject){
 		var idValue  = parseFloat(taskDelete);
-		// console.log("delete id value",idValue)
-		mongoDb().then(function(err,success){
-			db.collection('table',function(err,collection){
-				if(err)throw(err)
-				console.log(err)
-		 		collection.deleteOne({id:idValue},function(err,success){
-					if(err)throw(err)
-					resolve("success");
-				});
-			});
-		}).catch(function(err){
-				if(err)throw(err);
-				console.log(err);
-			});
+		schemas.deleteOne({ id: idValue }, function (err,success) {
+    if (err) throw(err);
+  	resolve(success)
+    });
 	});
 }
 
@@ -91,21 +58,14 @@ function deleteTodo(taskDelete){
 * @description: function is for updating status on click of check button in json file 
 */
 function updateStatusTodo(updateSts,updateText){
+	// console.log("update status",updateSts)
+	// 	console.log("update text",updateText.data)
 	var idValue = parseFloat(updateSts);
 	return new Promise(function(resolve,reject){
-	mongoDb().then(function(err,success){
-		db.collection('table',function(err,collection){
-			if(err)throw(err)
-			console.log(err)	
-		collection.updateMany({id:idValue},{$set :{status : updateText.data} },function(err,success){
-			if(err)throw(err)
-				resolve(success);
-		  });
-		});
-	}).catch(function(err){
-			if(err)throw(err)
-			console.log(err)
-	});
+	schemas.update({ id : idValue }, { $set :{status : updateText.data} }, function(err, success) {
+		if(err)throw(err)
+			resolve("success")
+	 });
  });
 }
 
@@ -116,19 +76,10 @@ function updateStatusTodo(updateSts,updateText){
 */
 function markAllTodo() {
 	return new Promise(function(resolve,reject){
-		mongoDb().then(function(err,success){
-			db.collection('table',function(err,collection){
-				if(err)throw(err)
-				console.log(err)
-				collection.updateMany({},{ $set: { status: true } } ,function(err,success){
-					if(err)throw(err)
-					resolve("success")
-				});		
-			});
-		}).catch(function(err){
+		schemas.updateMany({status : true}, function(err,success) {
 			if(err)throw(err)
-			console.log(err)
-		});
+			resolve(success)
+		})
 	});
 }
 
@@ -138,19 +89,10 @@ function markAllTodo() {
 */
 function unmarkAllTodo(){
 	return new Promise(function(resolve,reject){
-		mongoDb().then(function(err,success){
-			db.collection('table',function(err,collection){
-				if(err)throw(err)
-				console.log(err)
-			collection.updateMany({},{ $set : { status: false } },function(err,success){
-				if(err)throw(err)
-				resolve("success")
-		  	});
-			});
-		}).catch(function(err){
+		schemas.updateMany({status : false}, function(err,success) {
 			if(err)throw(err)
-			console.log(err)
-		});
+			resolve(success)
+		})
 	});
 }
 
@@ -160,19 +102,9 @@ function unmarkAllTodo(){
 */
 function activeTodo(){
 	return new Promise(function(resolve,reject){
-		mongoDb().then(function(err,success){
-			db.collection('table',function(err,collection){
-				if(err)throw(err)
-				console.log(err)
-				collection.find({ status : false }).toArray(function(err,success){
-					if(err)throw(err)
-					console.log(err)
-					resolve(success)
-				});
-			});
-		}).catch(function(err){
+		schemas.find({status :false},function (err, success) {
 			if(err)throw(err)
-			console.log(err)
+			resolve(success)
 		});
 	});
 }
@@ -183,19 +115,9 @@ function activeTodo(){
 */
 function completeTodo(){
 	return new Promise(function(resolve,reject){
-		mongoDb().then(function(err,success){
-			db.collection('table',function(err,collection){
-				if(err)throw(err)
-				console.log(err)
-				collection.find({ status : true}).toArray(function(err,success){
-					if(err)throw(err)
-					console.log(err)
-				resolve(success)
-				});
-			});
-		}).catch(function(err){
+		schemas.find({status :true},function (err, success) {
 			if(err)throw(err)
-			console.log(err)
+			resolve(success)
 		});
 	});
 }
@@ -206,19 +128,9 @@ function completeTodo(){
 */
 function clearCompTodo(){
 	return new Promise(function(resolve,reject){
-		mongoDb().then(function(err,success){
-			db.collection('table',function(err,collection){
-				if(err)throw(err)
-				console.log(err)
-			 collection.remove( { status : true }, function(err,success){
-				if(err)throw(err)
-				console.log(err)
-			  resolve(success)
-			 });
-			});
-		}).catch(function(err){
+		schemas.deleteMany({status : true}, function(err,success) {
 			if(err)throw(err)
-			console.log(err)
+			resolve("success")
 		});
 	});
 }
@@ -232,20 +144,10 @@ function updateInputTodo(updateTextId,updateTxt){
 	// console.log("updateTxt",updateTxt.data)
 	var idValue = parseFloat(updateTextId);
 	return new Promise(function(resolve,reject){
-		mongoDb().then(function(err,success){
-			db.collection('table',function(err,collection){
-				if(err)throw(err)
-				console.log(err)
-			  collection.update({id : idValue},{$set :{todoapp : updateTxt.data }},function(err,success){
-				if(err)throw(err)
-				console.log(err)
-			resolve(success)
-			});
-			});
-		}).catch(function(err){
+		schemas.updateOne({id : idValue },{$set : {todoapp : updateTxt.data}}, function(err,success){
 			if(err)throw(err)
-			console.log(err)
-		});
+			resolve(success)
+		})
 	});
 }
 
