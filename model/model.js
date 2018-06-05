@@ -68,6 +68,7 @@ function addTodo(task) {
 function deleteTodo(taskDelete){
 	return new Promise(function(resolve,reject){
 		var idValue  = parseFloat(taskDelete);
+		// console.log("delete id value",idValue)
 		mongoDb().then(function(err,success){
 			db.collection('table',function(err,collection){
 				if(err)throw(err)
@@ -90,16 +91,15 @@ function deleteTodo(taskDelete){
 * @description: function is for updating status on click of check button in json file 
 */
 function updateStatusTodo(updateSts,updateText){
-	// console.log("statusssssssssssss",updateSts)
-	// console.log("statusssssssssssss",updateText)
+	var idValue = parseFloat(updateSts);
 	return new Promise(function(resolve,reject){
 	mongoDb().then(function(err,success){
 		db.collection('table',function(err,collection){
 			if(err)throw(err)
 			console.log(err)	
-		collection.updateMany( {id:updateSts},function(err,success){
+		collection.updateMany({id:idValue},{$set :{status : updateText.data} },function(err,success){
 			if(err)throw(err)
-				resolve("success");
+				resolve(success);
 		  });
 		});
 	}).catch(function(err){
@@ -109,28 +109,6 @@ function updateStatusTodo(updateSts,updateText){
  });
 }
 
-function updateStatusTodo(updateSts,updateText){
-	console.log("statusssssssssssss",updateSts)
-	console.log("texttttttttttss",updateText)
-	return new Promise(function(resolve,reject){
-		console.log("in model", updateSts);
-		fs.readFile(directoryName,'utf-8',function(err,data){
-			var todoArray = JSON.parse(data);	
-			if (err) throw(err);
-			function statusChange(updateSts){
-				// in updateSts id of the element is coming
-				todoArray.forEach(function(element) {
-					if(element.id == updateSts)
-					element.status = !element.status;
-				});
-				console.log(todoArray);
-			}
-			statusChange(updateSts)
-			write(todoArray);
-			resolve(todoArray)
-		});
-	});
-}
 
 /**
 * @function markAllTodo(callback)
@@ -250,22 +228,25 @@ function clearCompTodo(){
 * @description: function is update text when edited from client side
 */
 function updateInputTodo(updateTextId,updateTxt){
-	return new Promise(function(resolve,request){
-	fs.readFile(directoryName,'utf-8',function(err,data){
-			var todoArray = JSON.parse(data);	
-			if (err)throw(err);
-			function idStatus(updateTxt,updateTextId){
-				todoArray.forEach(function(element) {
-					if(element.id == updateTextId)
-					element.todoapp = updateTxt.data;
-				});
-				console.log(todoArray);
-			}
-			idStatus(updateTxt,updateTextId)
-			write(todoArray)
-			resolve(todoArray)
+	// console.log("updateTextId",updateTextId)
+	// console.log("updateTxt",updateTxt.data)
+	var idValue = parseFloat(updateTextId);
+	return new Promise(function(resolve,reject){
+		mongoDb().then(function(err,success){
+			db.collection('table',function(err,collection){
+				if(err)throw(err)
+				console.log(err)
+			  collection.update({id : idValue},{$set :{todoapp : updateTxt.data }},function(err,success){
+				if(err)throw(err)
+				console.log(err)
+			resolve(success)
+			});
+			});
+		}).catch(function(err){
+			if(err)throw(err)
+			console.log(err)
 		});
-	})
+	});
 }
 
 

@@ -63,7 +63,7 @@ var deleteTodo = function(req,res){
 var updateStatusTodo = function(req,res){
 	var updateSts = req.params.id
 	var updateText = req.body;
-	console.log("update Textttttttt",updateText)
+	// console.log("update Textttttttt",updateText.data)
 	modules.updateStatusTodo(updateSts,updateText).then(
 		function(data){
 			res.send(data);
